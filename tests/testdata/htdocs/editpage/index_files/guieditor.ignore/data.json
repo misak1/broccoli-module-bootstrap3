@@ -1,0 +1,104 @@
+{
+ "bowl": {
+  "main": {
+   "modId": "_sys/root",
+   "fields": {
+    "main": [
+     {
+      "modId": "ModBT3:alerts/Alert",
+      "fields": {
+       "Alert": {
+        "fields": {
+         "alert-title": "Well done!",
+         "alert-message": "You successfully read this important alert message.",
+         "alert-style": " alert-success"
+        }
+       }
+      },
+      "anchor": "",
+      "dec": ""
+     }
+    ]
+   },
+   "anchor": "",
+   "dec": ""
+  },
+  "secondly": {
+   "modId": "_sys/root",
+   "fields": {
+    "main": [
+     {
+      "modId": "testMod1:icon/Glyphicons",
+      "fields": {
+       "Glyphicons": {
+        "resKey": "f7c892fc337e64e19a63581209fccf3b",
+        "icon": "star-empty"
+       }
+      },
+      "anchor": "",
+      "dec": ""
+     },
+     {
+      "modId": "testMod1:icon/Labels",
+      "fields": {
+       "Labels": {
+        "fields": {
+         "label-label": "New",
+         "label-style": " label-info"
+        }
+       }
+      },
+      "anchor": "",
+      "dec": ""
+     },
+     {
+      "modId": "testMod1:icon/Labels",
+      "fields": {
+       "Labels": {
+        "fields": {
+         "label-label": "New",
+         "label-style": " label-danger"
+        }
+       }
+      },
+      "anchor": "",
+      "dec": ""
+     },
+     {
+      "modId": "testMod1:alerts/Alert",
+      "fields": {
+       "Alert": {
+        "fields": {
+         "alert-title": "Well done!",
+         "alert-message": "You successfully read this important alert message.",
+         "alert-style": " alert-danger"
+        }
+       }
+      },
+      "anchor": "",
+      "dec": ""
+     },
+     {
+      "modId": "testMod1:dropdowns/Dropdown",
+      "fields": {
+       "Dropdown_id": "",
+       "Dropdown_name": "",
+       "Dropdown_loop": []
+      },
+      "anchor": "",
+      "dec": ""
+     },
+     {
+      "modId": "testMod1:grid/col2",
+      "fields": {
+       "column1": [],
+       "column2": []
+      }
+     }
+    ]
+   },
+   "anchor": "",
+   "dec": ""
+  }
+ }
+}

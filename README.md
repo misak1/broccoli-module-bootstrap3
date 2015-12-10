@@ -26,7 +26,7 @@ https://goo.gl/aOB8Jn
 ```
 ```js
 // broccoli-client (frontend) を処理
-gulp.src(["node_modules/broccoli-bootstrap3-fields/dist/**/*"])
+gulp.src(["node_modules/broccoli-module-bootstrap3/dist/**/*"])
   .pipe(gulp.dest("./dist/{PATH_TO_YOUR_DIRECTORY}"))
 ;
 ```
@@ -44,11 +44,11 @@ gulp.src(["node_modules/broccoli-bootstrap3-fields/dist/**/*"])
 
 'customFields': {
   // Bootstrap3
-  'Alert': require('broccoli-bootstrap3-fields').alert,
-  'Badge': require('broccoli-bootstrap3-fields').badge,
-  'Button': require('broccoli-bootstrap3-fields').button,
-  'Glyphicons': require('broccoli-bootstrap3-fields').glyphicons,
-  'Labels': require('broccoli-bootstrap3-fields').labels
+  'Alert': require('broccoli-module-bootstrap3').alert,
+  'Badge': require('broccoli-module-bootstrap3').badge,
+  'Button': require('broccoli-module-bootstrap3').button,
+  'Glyphicons': require('broccoli-module-bootstrap3').glyphicons,
+  'Labels': require('broccoli-module-bootstrap3').labels
 },
 ```
 
@@ -58,10 +58,10 @@ gulp.src(["node_modules/broccoli-bootstrap3-fields/dist/**/*"])
 ```
 ```js&css
 <!-- bootstrap -->
-<link rel="stylesheet" href="./{PATH_TO_YOUR_DIRECTORY}bs3/css/bootstrap.min.css" />
-<link rel="stylesheet" href="./{PATH_TO_YOUR_DIRECTORY}bs3/css/bootstrap-theme.min.css" />
-<link rel="stylesheet" href="./{PATH_TO_YOUR_DIRECTORY}bs3/css/bootstrap4broccoli.css" />
-<script type="text/javascript" href="./{PATH_TO_YOUR_DIRECTORY}bs3/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="./{PATH_TO_YOUR_DIRECTORY}broccoli-module-bootstrap3/client/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="./{PATH_TO_YOUR_DIRECTORY}broccoli-module-bootstrap3/client/dist/css/bootstrap-theme.min.css" />
+<link rel="stylesheet" href="./{PATH_TO_YOUR_DIRECTORY}broccoli-module-bootstrap3/client/dist/css/bootstrap4broccoli.css" />
+<script type="text/javascript" href="./{PATH_TO_YOUR_DIRECTORY}broccoli-module-bootstrap3/client/dist/js/bootstrap.min.js"></script>
 
 ```
 
@@ -71,13 +71,18 @@ gulp.src(["node_modules/broccoli-bootstrap3-fields/dist/**/*"])
 ```
 ```js
 'customFields': {
-  'imageeditor': window.BroccoliImageEditorField
+  // Bootstrap3
+  'Alert': window.broccoliBootstrap3AlertField,
+  'Badge': window.broccoliBootstrap3BadgeField,
+  'Button': window.broccoliBootstrap3ButtonField,
+  'Glyphicons': window.broccoliBootstrap3GlyphiconsField,
+  'Labels': window.broccoliBootstrap3LabelsField,
 },
 ```
 
 - templateを追加
 ```
-# cp node_modules/broccoli-imageeditor-field/tests/testdata/modules1/dev/imageeditor #{プロジェクトフォルダ}/px-files/themes/broccoli/modules/images/
+# cp node_modules/broccoli-module-bootstrap3/tests/testdata/modulesBT3 #{プロジェクトフォルダ}/px-files/themes/broccoli/
 ```
 
 - 配置&実行

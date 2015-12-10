@@ -1,5 +1,5 @@
 {
-  "name": "broccoli-bootstrap3-glyphicons-field",
+  "name": "broccoli-module-bootstrap3",
   "version": "0.0.1-alpha.1+nb",
   "description": "",
   "main": "libs/server.js",
@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/pickles2/broccoli-bootstrap3-glyphicons-field.git"
+    "url": "git+https://github.com/pickles2/broccoli-module-bootstrap3.git"
   },
   "author": "Misaki Shibata",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/pickles2/broccoli-bootstrap3-glyphicons-field/issues"
+    "url": "https://github.com/pickles2/broccoli-module-bootstrap3/issues"
   },
-  "homepage": "https://github.com/pickles2/broccoli-bootstrap3-glyphicons-field#readme",
+  "homepage": "https://github.com/pickles2/broccoli-module-bootstrap3#readme",
   "dependencies": {
     "JSONPath": "git://github.com/s3u/JSONPath.git",
     "br-resouce": "git://github.com/m-prj/br-resouce.git",

@@ -11,7 +11,7 @@ https://goo.gl/aOB8Jn
 - youngcorn/package.jsonに一行追加
 ```
 "dependencies": {
-  "broccoli-imageeditor-field": "git://github.com/pickles2/broccoli-imageeditor-field.git",
+  "broccoli-module-bootstrap3": "git://github.com/misak1/broccoli-module-bootstrap3.git",
 }
 ```
 - npmモジュールダウンロード
@@ -26,7 +26,7 @@ https://goo.gl/aOB8Jn
 ```
 ```js
 // broccoli-client (frontend) を処理
-gulp.src(["node_modules/broccoli-imageeditor-field/dist/**/*"])
+gulp.src(["node_modules/broccoli-bootstrap3-fields/dist/**/*"])
   .pipe(gulp.dest("./dist/{PATH_TO_YOUR_DIRECTORY}"))
 ;
 ```
@@ -36,8 +36,19 @@ gulp.src(["node_modules/broccoli-imageeditor-field/dist/**/*"])
 # atom backend/apis/broccoliBridgeForThemeEditor.js
 ```
 ```js
+'paths_module_template': {
+  'ModBT3': '../modulesBT3/'
+} ,
+
+~ 中略 ~
+
 'customFields': {
-  'imageeditor': require('broccoli-imageeditor-field')
+  // Bootstrap3
+  'Alert': require('broccoli-bootstrap3-fields').alert,
+  'Badge': require('broccoli-bootstrap3-fields').badge,
+  'Button': require('broccoli-bootstrap3-fields').button,
+  'Glyphicons': require('broccoli-bootstrap3-fields').glyphicons,
+  'Labels': require('broccoli-bootstrap3-fields').labels
 },
 ```
 
@@ -45,15 +56,12 @@ gulp.src(["node_modules/broccoli-imageeditor-field/dist/**/*"])
 ```
 # atom  src/project/themeEditor/editors/broccoli-html-editor/index.html.twig
 ```
-```js
-<!--broccoli-imageeditor-field -->
-<script src="/{PATH_TO_YOUR_DIRECTORY}broccoli-imageeditor-field.js"></script>
-<link rel="stylesheet" href="/{PATH_TO_YOUR_DIRECTORY}css/Jcrop.css" />
-<script src="/{PATH_TO_YOUR_DIRECTORY}Jcrop-editor.js"></script>
-<script src="/{PATH_TO_YOUR_DIRECTORY}Jcrop.js"></script>
-<script src="/{PATH_TO_YOUR_DIRECTORY}jquery.animate-colors-min.js"></script>
-<script src="/{PATH_TO_YOUR_DIRECTORY}rgbcolor.js"></script>
-<script src="/{PATH_TO_YOUR_DIRECTORY}underscore-min.js"></script>
+```js&css
+<!-- bootstrap -->
+<link rel="stylesheet" href="./{PATH_TO_YOUR_DIRECTORY}bs3/css/bootstrap.min.css" />
+<link rel="stylesheet" href="./{PATH_TO_YOUR_DIRECTORY}bs3/css/bootstrap-theme.min.css" />
+<link rel="stylesheet" href="./{PATH_TO_YOUR_DIRECTORY}bs3/css/bootstrap4broccoli.css" />
+<script type="text/javascript" href="./{PATH_TO_YOUR_DIRECTORY}bs3/js/bootstrap.min.js"></script>
 
 ```
 

@@ -14,9 +14,7 @@
          "alert-style": " alert-success"
         }
        }
-      },
-      "anchor": "",
-      "dec": ""
+      }
      }
     ]
    },
@@ -58,20 +56,6 @@
         "fields": {
          "label-label": "New",
          "label-style": " label-danger"
-        }
-       }
-      },
-      "anchor": "",
-      "dec": ""
-     },
-     {
-      "modId": "testMod1:alerts/Alert",
-      "fields": {
-       "Alert": {
-        "fields": {
-         "alert-title": "Well done!",
-         "alert-message": "You successfully read this important alert message.",
-         "alert-style": " alert-danger"
         }
        }
       },

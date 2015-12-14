@@ -37,7 +37,7 @@ gulp.src(["node_modules/broccoli-module-bootstrap3/dist/**/*"])
 ```
 ```js
 'paths_module_template': {
-  'ModBT3': '../modulesBT3/'
+  'ModBT3': data.documentRoot+'/modulesBT3/'
 } ,
 
 ~ 中略 ~
@@ -58,11 +58,12 @@ gulp.src(["node_modules/broccoli-module-bootstrap3/dist/**/*"])
 ```
 ```js&css
 <!-- bootstrap -->
-<link rel="stylesheet" href="./{PATH_TO_YOUR_DIRECTORY}broccoli-module-bootstrap3/client/dist/css/bootstrap.min.css" />
-<link rel="stylesheet" href="./{PATH_TO_YOUR_DIRECTORY}broccoli-module-bootstrap3/client/dist/css/bootstrap-theme.min.css" />
-<link rel="stylesheet" href="./{PATH_TO_YOUR_DIRECTORY}broccoli-module-bootstrap3/client/dist/css/bootstrap4broccoli.css" />
-<script type="text/javascript" href="./{PATH_TO_YOUR_DIRECTORY}broccoli-module-bootstrap3/client/dist/js/bootstrap.min.js"></script>
-
+<link rel="stylesheet" href="/{PATH_TO_YOUR_DIRECTORY}client/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/{PATH_TO_YOUR_DIRECTORY}client/dist/css/bootstrap-theme.min.css" />
+<link rel="stylesheet" href="/{PATH_TO_YOUR_DIRECTORY}client/dist/css/bootstrap4broccoli.css" />
+<script type="text/javascript" src="/{PATH_TO_YOUR_DIRECTORY}client/dist/js/bootstrap.min.js"></script>
+<!-- broccoli-fields-bt3 -->
+<script type="text/javascript" src="/{PATH_TO_YOUR_DIRECTORY}client/dist/broccoli-fields-bt3.js"></script>
 ```
 
 - themeに追加  

@@ -229,7 +229,7 @@ console.log('data', data);
 	}// this.saveEditorContent()
 }
 
-},{"./bootstrap3-button-var.js":2,"br-resouce":3,"iterate79":5,"m-log":6,"m-util":20,"phpjs":22,"underscore":23}],2:[function(require,module,exports){
+},{"./bootstrap3-button-var.js":2,"br-resouce":3,"iterate79":17,"m-log":18,"m-util":20,"phpjs":22,"underscore":23}],2:[function(require,module,exports){
 module.exports = new(function() {
   _btnLabel = "ボタンテキスト";
 	_btnAction = "";
@@ -321,320 +321,6 @@ module.exports = function() {
 }
 
 },{"m-util":20}],4:[function(require,module,exports){
-// shim for using process in browser
-
-var process = module.exports = {};
-
-process.nextTick = (function () {
-    var canSetImmediate = typeof window !== 'undefined'
-    && window.setImmediate;
-    var canPost = typeof window !== 'undefined'
-    && window.postMessage && window.addEventListener
-    ;
-
-    if (canSetImmediate) {
-        return function (f) { return window.setImmediate(f) };
-    }
-
-    if (canPost) {
-        var queue = [];
-        window.addEventListener('message', function (ev) {
-            var source = ev.source;
-            if ((source === window || source === null) && ev.data === 'process-tick') {
-                ev.stopPropagation();
-                if (queue.length > 0) {
-                    var fn = queue.shift();
-                    fn();
-                }
-            }
-        }, true);
-
-        return function nextTick(fn) {
-            queue.push(fn);
-            window.postMessage('process-tick', '*');
-        };
-    }
-
-    return function nextTick(fn) {
-        setTimeout(fn, 0);
-    };
-})();
-
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-
-function noop() {}
-
-process.on = noop;
-process.addListener = noop;
-process.once = noop;
-process.off = noop;
-process.removeListener = noop;
-process.removeAllListeners = noop;
-process.emit = noop;
-
-process.binding = function (name) {
-    throw new Error('process.binding is not supported');
-}
-
-// TODO(shtylman)
-process.cwd = function () { return '/' };
-process.chdir = function (dir) {
-    throw new Error('process.chdir is not supported');
-};
-
-},{}],5:[function(require,module,exports){
-/**
- * node-iterate79
- */
-(function(exports){
-
-	/**
-	 * 配列の直列処理
-	 */
-	exports.ary = function(ary, fnc, fncComplete){
-		return new (function( ary, fnc, fncComplete ){
-			this.idx = -1;
-			this.idxs = [];
-			for( var i in ary ){
-				this.idxs.push(i);
-			}
-			this.ary = ary||[];
-			this.fnc = fnc||function(){};
-			this.fncComplete = fncComplete||function(){};
-
-			this.next = function(){
-				if( this.idx+1 >= this.idxs.length ){
-					this.fncComplete();
-					return this;
-				}
-				this.idx ++;
-				this.fnc( this, this.ary[this.idxs[this.idx]], this.idxs[this.idx] );
-				return this;
-			}
-			this.next();
-		})(ary, fnc, fncComplete);
-	}
-
-	/**
-	 * 関数の直列処理
-	 */
-	exports.fnc = function(aryFuncs){
-		var mode = 'explicit';
-		var defaultArg = undefined;
-		if( arguments.length >= 2 ){
-			mode = 'implicit';
-			defaultArg = arguments[0];
-			aryFuncs = arguments[arguments.length-1];
-		}
-
-
-		function iterator( aryFuncs ){
-			aryFuncs = aryFuncs||[];
-
-			var idx = 0;
-			var funcs = aryFuncs;
-			var isStarted = false;//2重起動防止
-
-			this.start = function(arg){
-				if(isStarted){return this;}
-				isStarted = true;
-				return this.next(arg);
-			}
-
-			this.next = function(arg){
-				arg = arg||{};
-				if(funcs.length <= idx){return this;}
-				(funcs[idx++])(this, arg);
-				return this;
-			};
-		}
-		var rtn = new iterator(aryFuncs);
-		if( mode == 'implicit' ){
-			return rtn.start(defaultArg);
-		}
-		return rtn;
-	}
-
-
-})(exports);
-
-},{}],6:[function(require,module,exports){
-module.exports = require('./libs/log');
-
-},{"./libs/log":7}],7:[function(require,module,exports){
-module.exports = new(function() {
-
-    'use strict';
-    var colors = require('colors');
-    var colorTheme = {
-        silly: 'rainbow',
-        info: 'white',
-        input: 'magenta',
-        verbose: ['yellow', 'bgBlue'],
-        prompt: ['grey', 'bold'],
-        data: 'grey',
-        help: 'blue',
-        warn: 'yellow',
-        debug: 'red',
-        error: ['red', 'underline']
-    }
-
-    this.setColorTheme = function(colorTheme) {
-      for(var i in colorTheme){
-        // console.log('i', i);
-        var theme = "";
-        if(typeof colorTheme[i] === 'string'){
-          theme = '"'+colorTheme[i] + '"';
-          eval('colors.setTheme({' + i + ':' + theme + '});');
-        }else{
-          var v = "";
-          var aryVal = (colorTheme[i]).toString().split(',');
-          for (var x=0; x < aryVal.length; x++){
-            if(x > 0) v += ',';
-            v += '"' + aryVal[x] + '"';
-          }
-          eval('theme = {' + i + ':['+ v +']}');
-          colors.setTheme(theme);
-        }
-      }
-    }
-    this.setColorTheme(colorTheme);
-    this.getColorTheme = function() {
-      return colorTheme;
-    }
-
-    var format = require('date-format');
-    var DateTimeformat = '[hh:mm:ss.SSS]';
-    this.setDateTimeformat = function(format) {
-      DateTimeformat = format;
-    }
-    this.getDateTimeformat = function() {
-      return DateTimeformat;
-    }
-    this.getTime = function(){
-      return format.asString(DateTimeformat, new Date());
-    }
-
-    var isDebuggable = true;
-    this.setDebuggable = function(bool) {
-      isDebuggable = bool;
-    }
-
-    // Always Output
-    this.out = function(msg) {
-        var n = ""
-        for (var i = 0; i < arguments.length; i++) {
-            if (i > 0) n += ',';
-            n += JSON.stringify(arguments[i]);
-        }
-        console.log(n);
-    }
-    this.silly = function(msg) {
-        var n = ""
-        for (var i = 0; i < arguments.length; i++) {
-            if (i > 0) n += ',';
-            n += JSON.stringify(arguments[i]);
-        }
-        if (isDebuggable) {
-            console.log((this.getTime() + n).silly);
-        }
-    }
-    this.info = function(msg) {
-        var n = ""
-        for (var i = 0; i < arguments.length; i++) {
-            if (i > 0) n += ',';
-            n += JSON.stringify(arguments[i]);
-        }
-        if (isDebuggable) {
-            console.log((this.getTime() + n).info);
-        }
-    }
-    this.input = function(msg) {
-        var n = ""
-        for (var i = 0; i < arguments.length; i++) {
-            if (i > 0) n += ',';
-            n += JSON.stringify(arguments[i]);
-        }
-        if (isDebuggable) {
-            console.log((this.getTime() + n).input);
-        }
-    }
-    this.verbose = function(msg) {
-        var n = ""
-        for (var i = 0; i < arguments.length; i++) {
-            if (i > 0) n += ',';
-            n += JSON.stringify(arguments[i]);
-        }
-        if (isDebuggable) {
-            console.log((this.getTime() + n).verbose);
-        }
-    }
-    this.prompt = function(msg) {
-        var n = ""
-        for (var i = 0; i < arguments.length; i++) {
-            if (i > 0) n += ',';
-            n += JSON.stringify(arguments[i]);
-        }
-        if (isDebuggable) {
-            console.log((this.getTime() + n).prompt);
-        }
-    }
-    this.data = function(msg) {
-        var n = ""
-        for (var i = 0; i < arguments.length; i++) {
-            if (i > 0) n += ',';
-            n += JSON.stringify(arguments[i]);
-        }
-        if (isDebuggable) {
-            console.log((this.getTime() + n).data);
-        }
-    }
-    this.help = function(msg) {
-        var n = ""
-        for (var i = 0; i < arguments.length; i++) {
-            if (i > 0) n += ',';
-            n += JSON.stringify(arguments[i]);
-        }
-        if (isDebuggable) {
-            console.log((this.getTime() + n).help);
-        }
-    }
-    this.warn = function(msg) {
-        var n = ""
-        for (var i = 0; i < arguments.length; i++) {
-            if (i > 0) n += ',';
-            n += JSON.stringify(arguments[i]);
-        }
-        if (isDebuggable) {
-            console.log((this.getTime() + n).warn);
-        }
-    }
-    this.debug = function(msg) {
-        var n = ""
-        for (var i = 0; i < arguments.length; i++) {
-            if (i > 0) n += ',';
-            n += JSON.stringify(arguments[i]);
-        }
-        if (isDebuggable) {
-            console.log((this.getTime() + n).debug);
-        }
-    }
-    this.error = function(msg) {
-        var n = ""
-        for (var i = 0; i < arguments.length; i++) {
-            if (i > 0) n += ',';
-            n += JSON.stringify(arguments[i]);
-        }
-        if (isDebuggable) {
-            console.log((this.getTime() + n).error);
-        }
-    }
-})();
-
-},{"colors":12,"date-format":19}],8:[function(require,module,exports){
 /*
 
 The MIT License (MIT)
@@ -822,7 +508,7 @@ for (var map in colors.maps) {
 }
 
 defineProps(colors, init());
-},{"./custom/trap":9,"./custom/zalgo":10,"./maps/america":13,"./maps/rainbow":14,"./maps/random":15,"./maps/zebra":16,"./styles":17,"./system/supports-colors":18}],9:[function(require,module,exports){
+},{"./custom/trap":5,"./custom/zalgo":6,"./maps/america":9,"./maps/rainbow":10,"./maps/random":11,"./maps/zebra":12,"./styles":13,"./system/supports-colors":14}],5:[function(require,module,exports){
 module['exports'] = function runTheTrap (text, options) {
   var result = "";
   text = text || "Run the trap, drop the bass";
@@ -869,7 +555,7 @@ module['exports'] = function runTheTrap (text, options) {
 
 }
 
-},{}],10:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 // please no
 module['exports'] = function zalgo(text, options) {
   text = text || "   he is here   ";
@@ -975,7 +661,7 @@ module['exports'] = function zalgo(text, options) {
   return heComes(text, options);
 }
 
-},{}],11:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 var colors = require('./colors');
 
 module['exports'] = function () {
@@ -1089,7 +775,7 @@ module['exports'] = function () {
   };
 
 };
-},{"./colors":8}],12:[function(require,module,exports){
+},{"./colors":4}],8:[function(require,module,exports){
 var colors = require('./colors');
 module['exports'] = colors;
 
@@ -1102,7 +788,7 @@ module['exports'] = colors;
 //
 //
 require('./extendStringPrototype')();
-},{"./colors":8,"./extendStringPrototype":11}],13:[function(require,module,exports){
+},{"./colors":4,"./extendStringPrototype":7}],9:[function(require,module,exports){
 var colors = require('../colors');
 
 module['exports'] = (function() {
@@ -1115,7 +801,7 @@ module['exports'] = (function() {
     }
   }
 })();
-},{"../colors":8}],14:[function(require,module,exports){
+},{"../colors":4}],10:[function(require,module,exports){
 var colors = require('../colors');
 
 module['exports'] = (function () {
@@ -1130,7 +816,7 @@ module['exports'] = (function () {
 })();
 
 
-},{"../colors":8}],15:[function(require,module,exports){
+},{"../colors":4}],11:[function(require,module,exports){
 var colors = require('../colors');
 
 module['exports'] = (function () {
@@ -1139,13 +825,13 @@ module['exports'] = (function () {
     return letter === " " ? letter : colors[available[Math.round(Math.random() * (available.length - 1))]](letter);
   };
 })();
-},{"../colors":8}],16:[function(require,module,exports){
+},{"../colors":4}],12:[function(require,module,exports){
 var colors = require('../colors');
 
 module['exports'] = function (letter, i, exploded) {
   return i % 2 === 0 ? letter : colors.inverse(letter);
 };
-},{"../colors":8}],17:[function(require,module,exports){
+},{"../colors":4}],13:[function(require,module,exports){
 /*
 The MIT License (MIT)
 
@@ -1223,7 +909,7 @@ Object.keys(codes).forEach(function (key) {
   style.open = '\u001b[' + val[0] + 'm';
   style.close = '\u001b[' + val[1] + 'm';
 });
-},{}],18:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 (function (process){
 /*
 The MIT License (MIT)
@@ -1286,8 +972,8 @@ module.exports = (function () {
 
   return false;
 })();
-}).call(this,require("1YiZ5S"))
-},{"1YiZ5S":4}],19:[function(require,module,exports){
+}).call(this,require("VCmEsw"))
+},{"VCmEsw":16}],15:[function(require,module,exports){
 "use strict";
 
 module.exports = asString
@@ -1363,7 +1049,321 @@ function asString(/*format,*/ date) {
 
 };
 
-},{}],20:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
+// shim for using process in browser
+
+var process = module.exports = {};
+
+process.nextTick = (function () {
+    var canSetImmediate = typeof window !== 'undefined'
+    && window.setImmediate;
+    var canPost = typeof window !== 'undefined'
+    && window.postMessage && window.addEventListener
+    ;
+
+    if (canSetImmediate) {
+        return function (f) { return window.setImmediate(f) };
+    }
+
+    if (canPost) {
+        var queue = [];
+        window.addEventListener('message', function (ev) {
+            var source = ev.source;
+            if ((source === window || source === null) && ev.data === 'process-tick') {
+                ev.stopPropagation();
+                if (queue.length > 0) {
+                    var fn = queue.shift();
+                    fn();
+                }
+            }
+        }, true);
+
+        return function nextTick(fn) {
+            queue.push(fn);
+            window.postMessage('process-tick', '*');
+        };
+    }
+
+    return function nextTick(fn) {
+        setTimeout(fn, 0);
+    };
+})();
+
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+}
+
+// TODO(shtylman)
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+
+},{}],17:[function(require,module,exports){
+/**
+ * node-iterate79
+ */
+(function(exports){
+
+	/**
+	 * 配列の直列処理
+	 */
+	exports.ary = function(ary, fnc, fncComplete){
+		return new (function( ary, fnc, fncComplete ){
+			this.idx = -1;
+			this.idxs = [];
+			for( var i in ary ){
+				this.idxs.push(i);
+			}
+			this.ary = ary||[];
+			this.fnc = fnc||function(){};
+			this.fncComplete = fncComplete||function(){};
+
+			this.next = function(){
+				if( this.idx+1 >= this.idxs.length ){
+					this.fncComplete();
+					return this;
+				}
+				this.idx ++;
+				this.fnc( this, this.ary[this.idxs[this.idx]], this.idxs[this.idx] );
+				return this;
+			}
+			this.next();
+		})(ary, fnc, fncComplete);
+	}
+
+	/**
+	 * 関数の直列処理
+	 */
+	exports.fnc = function(aryFuncs){
+		var mode = 'explicit';
+		var defaultArg = undefined;
+		if( arguments.length >= 2 ){
+			mode = 'implicit';
+			defaultArg = arguments[0];
+			aryFuncs = arguments[arguments.length-1];
+		}
+
+
+		function iterator( aryFuncs ){
+			aryFuncs = aryFuncs||[];
+
+			var idx = 0;
+			var funcs = aryFuncs;
+			var isStarted = false;//2重起動防止
+
+			this.start = function(arg){
+				if(isStarted){return this;}
+				isStarted = true;
+				return this.next(arg);
+			}
+
+			this.next = function(arg){
+				arg = arg||{};
+				if(funcs.length <= idx){return this;}
+				(funcs[idx++])(this, arg);
+				return this;
+			};
+		}
+		var rtn = new iterator(aryFuncs);
+		if( mode == 'implicit' ){
+			return rtn.start(defaultArg);
+		}
+		return rtn;
+	}
+
+
+})(exports);
+
+},{}],18:[function(require,module,exports){
+module.exports = require('./libs/log');
+
+},{"./libs/log":19}],19:[function(require,module,exports){
+module.exports = new(function() {
+
+    'use strict';
+    var colors = require('colors');
+    var colorTheme = {
+        silly: 'rainbow',
+        info: 'white',
+        input: 'magenta',
+        verbose: ['yellow', 'bgBlue'],
+        prompt: ['grey', 'bold'],
+        data: 'grey',
+        help: 'blue',
+        warn: 'yellow',
+        debug: 'red',
+        error: ['red', 'underline']
+    }
+
+    this.setColorTheme = function(colorTheme) {
+      for(var i in colorTheme){
+        // console.log('i', i);
+        var theme = "";
+        if(typeof colorTheme[i] === 'string'){
+          theme = '"'+colorTheme[i] + '"';
+          eval('colors.setTheme({' + i + ':' + theme + '});');
+        }else{
+          var v = "";
+          var aryVal = (colorTheme[i]).toString().split(',');
+          for (var x=0; x < aryVal.length; x++){
+            if(x > 0) v += ',';
+            v += '"' + aryVal[x] + '"';
+          }
+          eval('theme = {' + i + ':['+ v +']}');
+          colors.setTheme(theme);
+        }
+      }
+    }
+    this.setColorTheme(colorTheme);
+    this.getColorTheme = function() {
+      return colorTheme;
+    }
+
+    var format = require('date-format');
+    var DateTimeformat = '[hh:mm:ss.SSS]';
+    this.setDateTimeformat = function(format) {
+      DateTimeformat = format;
+    }
+    this.getDateTimeformat = function() {
+      return DateTimeformat;
+    }
+    this.getTime = function(){
+      return format.asString(DateTimeformat, new Date());
+    }
+
+    var isDebuggable = true;
+    this.setDebuggable = function(bool) {
+      isDebuggable = bool;
+    }
+
+    // Always Output
+    this.out = function(msg) {
+        var n = ""
+        for (var i = 0; i < arguments.length; i++) {
+            if (i > 0) n += ',';
+            n += JSON.stringify(arguments[i]);
+        }
+        console.log(n);
+    }
+    this.silly = function(msg) {
+        var n = ""
+        for (var i = 0; i < arguments.length; i++) {
+            if (i > 0) n += ',';
+            n += JSON.stringify(arguments[i]);
+        }
+        if (isDebuggable) {
+            console.log((this.getTime() + n).silly);
+        }
+    }
+    this.info = function(msg) {
+        var n = ""
+        for (var i = 0; i < arguments.length; i++) {
+            if (i > 0) n += ',';
+            n += JSON.stringify(arguments[i]);
+        }
+        if (isDebuggable) {
+            console.log((this.getTime() + n).info);
+        }
+    }
+    this.input = function(msg) {
+        var n = ""
+        for (var i = 0; i < arguments.length; i++) {
+            if (i > 0) n += ',';
+            n += JSON.stringify(arguments[i]);
+        }
+        if (isDebuggable) {
+            console.log((this.getTime() + n).input);
+        }
+    }
+    this.verbose = function(msg) {
+        var n = ""
+        for (var i = 0; i < arguments.length; i++) {
+            if (i > 0) n += ',';
+            n += JSON.stringify(arguments[i]);
+        }
+        if (isDebuggable) {
+            console.log((this.getTime() + n).verbose);
+        }
+    }
+    this.prompt = function(msg) {
+        var n = ""
+        for (var i = 0; i < arguments.length; i++) {
+            if (i > 0) n += ',';
+            n += JSON.stringify(arguments[i]);
+        }
+        if (isDebuggable) {
+            console.log((this.getTime() + n).prompt);
+        }
+    }
+    this.data = function(msg) {
+        var n = ""
+        for (var i = 0; i < arguments.length; i++) {
+            if (i > 0) n += ',';
+            n += JSON.stringify(arguments[i]);
+        }
+        if (isDebuggable) {
+            console.log((this.getTime() + n).data);
+        }
+    }
+    this.help = function(msg) {
+        var n = ""
+        for (var i = 0; i < arguments.length; i++) {
+            if (i > 0) n += ',';
+            n += JSON.stringify(arguments[i]);
+        }
+        if (isDebuggable) {
+            console.log((this.getTime() + n).help);
+        }
+    }
+    this.warn = function(msg) {
+        var n = ""
+        for (var i = 0; i < arguments.length; i++) {
+            if (i > 0) n += ',';
+            n += JSON.stringify(arguments[i]);
+        }
+        if (isDebuggable) {
+            console.log((this.getTime() + n).warn);
+        }
+    }
+    this.debug = function(msg) {
+        var n = ""
+        for (var i = 0; i < arguments.length; i++) {
+            if (i > 0) n += ',';
+            n += JSON.stringify(arguments[i]);
+        }
+        if (isDebuggable) {
+            console.log((this.getTime() + n).debug);
+        }
+    }
+    this.error = function(msg) {
+        var n = ""
+        for (var i = 0; i < arguments.length; i++) {
+            if (i > 0) n += ',';
+            n += JSON.stringify(arguments[i]);
+        }
+        if (isDebuggable) {
+            console.log((this.getTime() + n).error);
+        }
+    }
+})();
+
+},{"colors":8,"date-format":15}],20:[function(require,module,exports){
 module.exports = new(function() {
 
   // ヒアドキュメント用

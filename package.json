@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/pickles2/broccoli-module-bootstrap3#readme",
   "dependencies": {
-    "JSONPath": "git://github.com/s3u/JSONPath.git",
+    "jsonpath-plus": "git://github.com/s3u/JSONPath.git",
     "br-resouce": "git://github.com/m-prj/br-resouce.git",
     "cheerio": "^0.19.0",
     "colors": "^1.1.2",
